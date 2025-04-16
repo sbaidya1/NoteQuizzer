@@ -1,0 +1,37 @@
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# SQLite DB 
+*.sqlite3
+*.db
+
+# VSCode settings
+.vscode/
+
+# PyMuPDF cache files (if any)
+*.xref
+*.save
+
+# MacOS / general OS files
+.DS_Store
+Thumbs.db
+
+# ChromaDB generated folder 
+chroma_db/
+
+# Uploads folder 
+uploads/
+
+# Log files
+*.log

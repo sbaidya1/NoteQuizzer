@@ -1,0 +1,104 @@
+<!--
+  Homepage for app. Extends base layout and handles:
+  - Uploading PDF notes/readings
+  - Listing uploaded files
+  - Inputting quiz topic
+  - Displaying generated quiz
+  - Displaying quiz results with correct answers, 
+    explanations, and relevants text(s) for each quesiton 
+-->
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Upload Your PDF Notes/Readings</h1>
+
+<!-- File upload form (for notes, readings, etc. to be used for quiz generation) -->
+<form action="/upload" method="post" enctype="multipart/form-data">
+  <input type="file" name="files" accept=".pdf" multiple required>
+  <button type="submit">Upload</button>
+</form>
+
+<!-- Display all uploaded files (shows first 200 characters of file) -->
+<ul class="notes">
+  {% for note in notes %}
+    <li>
+      <strong>{{ note.filename }}</strong><br>
+      <em>{{ note.content[:200] }}{% if note.content|length > 200 %}...{% endif %}</em>
+    </li>
+  {% endfor %}
+</ul>
+
+<!-- Button to clear all uploaded files -->
+<form action="{{ url_for('reset') }}" method="POST">
+  <button type="submit" class="reset-button">Clear All Files</button>
+</form>
+
+<!-- Quiz topic input -->
+<h2>What topic do you want to be quizzed on?</h2>
+<form action="/search" method="post">
+  <input type="text" name="topic" placeholder="Enter a topic..." value="{{ topic }}" required>
+  <button type="submit">Search</button>
+</form>
+
+<!-- 
+  Displays generated quiz questions (if available)
+  Includes hidden metadata for the topic, quiz ID, questions, and correct answers 
+  These hidden fields are used by the backend to evaluate the user's responses after submission
+-->
+{% if questions %}
+<form action="/evaluate" method="post">
+  <input type="hidden" name="topic" value="{{ topic }}">
+  <input type="hidden" name="quiz_id" value="{{ quiz_id }}">
+  {% for qa in questions %}
+    <div class="question-block">
+      <p><strong>Q{{ loop.index }}:</strong> {{ qa.question }}</p>
+      <input type="hidden" name="question_{{ loop.index0 }}" value="{{ qa.question }}">
+      <input type="hidden" name="answer_{{ loop.index0 }}" value="{{ qa.answer }}">
+      <label>Your answer:</label>
+      <input type="text" name="user_answer_{{ loop.index0 }}" required>
+    </div>
+  {% endfor %}
+  <input type="hidden" name="num_questions" value="{{ questions|length }}">
+  <button type="submit">Submit Answers</button>
+</form>
+{% endif %}
+
+<!-- Displays quiz results for each question (if available) -->
+{% if results %}
+<hr>
+<h2>Results for quiz on "{{ topic }}"</h2>
+<div class="quiz-results">
+  {% for r in results %}
+    <!-- Set color coding based on score -->
+    {% set score = r.score|int %}
+    {% set score_class = "quiz-result" %}
+    {% if score < 4 %}
+      {% set score_class = "quiz-result low-score" %}
+    {% elif score < 7 %}
+      {% set score_class = "quiz-result mid-score" %}
+    {% endif %}
+
+    <div class="{{ score_class }}">
+      <h3>Q{{ loop.index }}: {{ r.question }}</h3>
+      <p><strong>Your Answer:</strong> {{ r.user_answer }}</p>
+      <p><strong>Correct Answer:</strong> {{ r.correct_answer }}</p>
+      <p><strong>Score:</strong> {{ r.score }}/10</p>
+      <p><strong>Explanation:</strong> {{ r.explanation }}</p>
+      <details>
+        <summary>Relevant Text</summary>
+        <ul>
+          {% for chunk in r.chunks %}
+          <li>
+            <strong>From file {{ chunk.source }}, page {{ chunk.page }}:</strong><br>
+            <pre style="white-space: pre-wrap;">{{ chunk.text }}</pre>
+          </li>
+          {% endfor %}
+        </ul>
+      </details>
+    </div>
+  {% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}

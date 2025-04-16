@@ -1,0 +1,120 @@
+/* 
+  Style sheet for NoteQuizzer App
+
+  This file contains all the styling for the app, including the 
+  main layout, mini file dipslay, quiz forms, and buttons.
+*/
+
+body {
+  font-family: sans-serif;
+  margin: 40px auto;
+  max-width: 800px;
+  padding: 0 20px;
+  background: #f9f9f9;
+  color: #333;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+form {
+  margin-bottom: 30px;
+}
+
+input[type="file"],
+input[type="text"],
+button {
+  font-size: 1em;
+  padding: 10px;
+  margin: 5px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Primary button styling */
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.reset-button {
+  background-color: #e74c3c;
+}
+
+.reset-button:hover {
+  background-color: #d54434;
+}
+
+/* Uploaded notes list */
+ul.notes {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul.notes li {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+ul.notes form {
+  display: inline;
+}
+
+/* Display block for each quiz question */
+.question-block {
+  background: #ffffff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Quiz results container */
+.quiz-results {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Each individual result block */
+.quiz-result {
+  border-left: 5px solid #4CAF50;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #f6fff6;
+  border-radius: 4px;
+}
+
+.quiz-result.mid-score {
+  border-left-color: #f39c12;
+  background-color: #fffdf3;
+}
+
+.quiz-result.low-score {
+  border-left-color: #e74c3c;
+  background-color: #fff5f5;
+}
+
+.quiz-result h3 {
+  margin-top: 0;
+}
+
+/* Details summary */
+details summary {
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
