@@ -11,7 +11,6 @@ NoteQuizzer is a Flask-based web app that lets you upload your PDF class notes o
 ### 3. View your results   
 <img src="demo_screenshots/quiz_eval.png" width="400"/>
 
-&nbsp;
 ## Features:
 
 - Upload PDF notes/readings 
